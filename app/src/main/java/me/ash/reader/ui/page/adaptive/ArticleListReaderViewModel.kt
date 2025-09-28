@@ -35,6 +35,7 @@ import me.ash.reader.domain.model.article.ArticleFlowItem
 import me.ash.reader.domain.model.article.ArticleWithFeed
 import me.ash.reader.domain.model.feed.Feed
 import me.ash.reader.domain.model.general.MarkAsReadConditions
+import me.ash.reader.domain.service.FeedbinRssService
 import me.ash.reader.domain.service.GoogleReaderRssService
 import me.ash.reader.domain.service.LocalRssService
 import me.ash.reader.domain.service.RssService
@@ -71,9 +72,8 @@ constructor(
 
     val flowUiState: StateFlow<FlowUiState?> =
         articleListUseCase.pagerFlow
-            .combine(groupWithFeedsListUseCase.groupWithFeedListFlow) {
-                pagerData,
-                groupWithFeedsList ->
+            .combine(groupWithFeedsListUseCase.groupWithFeedListFlow) { pagerData,
+                                                                        groupWithFeedsList ->
                 val filterState = pagerData.filterState
                 var nextFilterState: FilterState? = null
                 if (filterState.group != null) {
@@ -191,7 +191,7 @@ constructor(
         viewModelScope.launch {
             if (
                 settingsProvider.settings.pullToSwitchFeed ==
-                    PullToLoadNextFeedPreference.MarkAsReadAndLoadNextFeed
+                PullToLoadNextFeedPreference.MarkAsReadAndLoadNextFeed
             ) {
                 markAllAsRead()
             }
@@ -226,13 +226,7 @@ constructor(
             val filterState = filterStateUseCase.filterStateFlow.value
             val service = rssService.get()
             when (service) {
-                is LocalRssService ->
-                    service.doSyncOneTime(
-                        feedId = filterState.feed?.id,
-                        groupId = filterState.group?.id,
-                    )
-
-                is GoogleReaderRssService ->
+                is LocalRssService, is GoogleReaderRssService, is FeedbinRssService ->
                     service.doSyncOneTime(
                         feedId = filterState.feed?.id,
                         groupId = filterState.group?.id,
@@ -284,7 +278,7 @@ constructor(
                 } else {
                     snapshotList.find { item ->
                         item is ArticleFlowItem.Article &&
-                            item.articleWithFeed.article.id == articleId
+                                item.articleWithFeed.article.id == articleId
                     } as? ArticleFlowItem.Article
                 }
 
@@ -302,13 +296,13 @@ constructor(
                 }
                 _readerState.update {
                     it.copy(
-                            articleId = article.id,
-                            feedName = feed.name,
-                            title = article.title,
-                            author = article.author,
-                            link = article.link,
-                            publishedDate = article.date,
-                        )
+                        articleId = article.id,
+                        feedName = feed.name,
+                        title = article.title,
+                        author = article.author,
+                        link = article.link,
+                        publishedDate = article.date,
+                    )
                         .prefetchArticleId()
                         .renderContent(this)
                 }
