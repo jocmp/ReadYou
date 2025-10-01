@@ -86,6 +86,22 @@ class AdditionViewModel @Inject constructor(
             )
         }
     }
+
+    fun showAddFeedbinAccountDialog() {
+        _additionUiState.update {
+            it.copy(
+                addFeedbinAccountDialogVisible = true,
+            )
+        }
+    }
+
+    fun hideAddFeedbinAccountDialog() {
+        _additionUiState.update {
+            it.copy(
+                addFeedbinAccountDialogVisible = false,
+            )
+        }
+    }
 }
 
 data class AdditionUiState(
@@ -93,4 +109,5 @@ data class AdditionUiState(
     val addFeverAccountDialogVisible: Boolean = false,
     val addGoogleReaderAccountDialogVisible: Boolean = false,
     val addFreshRSSAccountDialogVisible: Boolean = false,
+    val addFeedbinAccountDialogVisible: Boolean = false,
 )
