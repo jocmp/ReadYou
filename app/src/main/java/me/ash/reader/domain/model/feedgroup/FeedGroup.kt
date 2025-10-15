@@ -34,12 +34,14 @@ import me.ash.reader.domain.model.group.Group
             onDelete = ForeignKey.CASCADE
         )
     ],
+    indices = [
+        Index(value = ["feedId"]),
+        Index(value = ["groupId"]),
+        Index(value = ["accountId"])
+    ]
 )
 data class FeedGroup(
-    @ColumnInfo(index = true)
     val feedId: String,
-    @ColumnInfo(index = true)
     val groupId: String,
-    @ColumnInfo(index = true)
     val accountId: Int,
 )

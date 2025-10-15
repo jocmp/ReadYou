@@ -4,6 +4,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.model.group.GroupWithFeed
+import me.ash.reader.domain.model.group.GroupWithFeedViaJunction
 
 @Dao
 interface GroupDao {
@@ -85,4 +86,43 @@ interface GroupDao {
         insertAll(newGroups)
         updateAll(groupsToUpdate)
     }
+
+    /**
+     * Query all groups with their feeds using the many-to-many junction table.
+     * This supports feeds belonging to multiple groups.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM `group`
+        WHERE accountId = :accountId
+        """
+    )
+    suspend fun queryAllGroupWithFeedViaJunction(accountId: Int): List<GroupWithFeedViaJunction>
+
+    /**
+     * Query all groups with their feeds using the many-to-many junction table as a Flow.
+     * This supports feeds belonging to multiple groups with reactive updates.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM `group`
+        WHERE accountId = :accountId
+        """
+    )
+    fun queryAllGroupWithFeedViaJunctionAsFlow(accountId: Int): Flow<List<GroupWithFeedViaJunction>>
+
+    /**
+     * Query a specific group with its feeds using the many-to-many junction table.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM `group`
+        WHERE id = :groupId
+        AND accountId = :accountId
+        """
+    )
+    suspend fun queryGroupWithFeedViaJunction(groupId: String, accountId: Int): GroupWithFeedViaJunction?
 }

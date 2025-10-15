@@ -1,11 +1,10 @@
 package me.ash.reader.domain.model.feed
 
 import androidx.room.*
+import me.ash.reader.domain.model.feedgroup.FeedGroup
 import me.ash.reader.domain.model.group.Group
+import me.ash.reader.domain.repository.FeedGroupDao
 
-/**
- * TODO: Add class description
- */
 @Entity(
     tableName = "feed",
     foreignKeys = [ForeignKey(

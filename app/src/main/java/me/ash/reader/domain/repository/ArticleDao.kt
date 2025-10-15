@@ -15,6 +15,7 @@ import me.ash.reader.domain.model.article.Article
 import me.ash.reader.domain.model.article.ArticleMeta
 import me.ash.reader.domain.model.article.ArticleWithFeed
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.ImportantNum
 import java.util.Date
 
 @Dao

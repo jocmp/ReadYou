@@ -13,6 +13,7 @@ import me.ash.reader.domain.model.group.Group
 import me.ash.reader.domain.repository.AccountDao
 import me.ash.reader.domain.repository.ArticleDao
 import me.ash.reader.domain.repository.FeedDao
+import me.ash.reader.domain.repository.FeedGroupDao
 import me.ash.reader.domain.repository.GroupDao
 import me.ash.reader.infrastructure.preference.*
 import me.ash.reader.ui.ext.toInt
@@ -20,7 +21,7 @@ import java.util.*
 
 @Database(
     entities = [Account::class, Feed::class, Article::class, Group::class, ArchivedArticle::class, me.ash.reader.domain.model.feedgroup.FeedGroup::class],
-    version = 9,
+    version = 10,
     autoMigrations = [
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 5, to = 7),
@@ -44,6 +45,7 @@ abstract class AndroidDatabase : RoomDatabase() {
     abstract fun feedDao(): FeedDao
     abstract fun articleDao(): ArticleDao
     abstract fun groupDao(): GroupDao
+    abstract fun feedGroupDao(): FeedGroupDao
 
     companion object {
 
@@ -82,6 +84,7 @@ val allMigrations = arrayOf(
     MIGRATION_3_4,
     MIGRATION_4_5,
     MIGRATION_8_9,
+    MIGRATION_9_10,
 )
 
 @Suppress("ClassName")
@@ -171,5 +174,14 @@ object MIGRATION_8_9 : Migration(8, 9) {
             SELECT id, groupId, accountId FROM feed
             """.trimIndent()
         )
+    }
+}
+
+@Suppress("ClassName")
+object MIGRATION_9_10 : Migration(9, 10) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_feedId ON feed_group(feedId)")
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_groupId ON feed_group(groupId)")
+        database.execSQL("CREATE INDEX IF NOT EXISTS index_feed_group_accountId ON feed_group(accountId)")
     }
 }
