@@ -85,7 +85,7 @@ constructor(
         requireNotNull(account) { "cannot find account" }
         check(account.type.id == AccountType.Feedbin.id) { "account type is invalid" }
 
-        syncFeeds()
+        syncFeeds(accountId)
 
         return success()
     }
@@ -94,29 +94,29 @@ constructor(
 //        feedbin.icons()
         val feeds = feedbin.subscriptions().map {
 
-
-        Feed(
-            id = accountId.spacerDollar(),
-            name = it.title,
-            url = it.feedUrl,
-            groupId = accountId.spacerDollar(feedsGroupsMap[it.id.toString()]!!),
-            accountId = accountId,
-            icon = faviconsById[it.favicon_id]?.data,
-        )
+//
+//            Feed(
+//                id = accountId.spacerDollar(),
+//                name = it.title,
+//                url = it.feedUrl,
+//                groupId = accountId.spacerDollar(feedsGroupsMap[it.id.toString()]!!),
+//                accountId = accountId,
+//                icon = faviconsById[it.favicon_id]?.data,
+//            )
         }
-
-        feedDao.insertOrUpdate(
-            feedsBody.feeds?.map {
-                Feed(
-                    id = accountId.spacerDollar(it.id!!),
-                    name = it.title.decodeHTML() ?: context.getString(R.string.empty),
-                    url = it.url!!,
-                    groupId = accountId.spacerDollar(feedsGroupsMap[it.id.toString()]!!),
-                    accountId = accountId,
-                    icon = faviconsById[it.favicon_id]?.data,
-                )
-            } ?: emptyList()
-        )
+//
+//        feedDao.insertOrUpdate(
+//            feedsBody.feeds?.map {
+//                Feed(
+//                    id = accountId.spacerDollar(it.id!!),
+//                    name = it.title.decodeHTML() ?: context.getString(R.string.empty),
+//                    url = it.url!!,
+//                    groupId = accountId.spacerDollar(feedsGroupsMap[it.id.toString()]!!),
+//                    accountId = accountId,
+//                    icon = faviconsById[it.favicon_id]?.data,
+//                )
+//            } ?: emptyList()
+//        )
 
     }
 }
