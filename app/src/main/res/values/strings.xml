@@ -249,6 +249,8 @@
     <string name="fresh_rss" translatable="false">FreshRSS</string>
     <string name="feedly" translatable="false">Feedly</string>
     <string name="inoreader" translatable="false">Inoreader</string>
+    <string name="feedbin" translatable="false">Feedbin</string>
+    <string name="feedbin_desc" translatable="false">feedbin.com</string>
     <string name="local_desc">On this device</string>
     <string name="services">Services</string>
     <string name="feedly_desc" translatable="false">feedly.com</string>
@@ -385,4 +387,5 @@
     <string name="parse_full_content_desc">Fetch full articles from webpages</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
+    <string name="email">Email</string>
 </resources>

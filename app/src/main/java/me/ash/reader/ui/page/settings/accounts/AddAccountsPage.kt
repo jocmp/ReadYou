@@ -31,8 +31,6 @@ fun AddAccountsPage(
     onBack: () -> Unit,
     navigateToAccountDetails: (Int) -> Unit,
 ) {
-    val context = LocalContext.current
-
     RYScaffold(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
@@ -64,27 +62,22 @@ fun AddAccountsPage(
                     ) {}
                     Spacer(modifier = Modifier.height(24.dp))
                 }
-/*                item {
+                item {
                     Subtitle(
                         modifier = Modifier.padding(horizontal = 24.dp),
                         text = stringResource(R.string.services),
                     )
+
                     SettingItem(
-                        enabled = false,
-                        title = stringResource(R.string.feedly),
-                        desc = stringResource(R.string.feedly_desc),
-                        iconPainter = painterResource(id = R.drawable.ic_feedly),
-                        onClick = {},
-                    ) {}
-                    SettingItem(
-                        enabled = false,
-                        title = stringResource(R.string.inoreader),
-                        desc = stringResource(R.string.inoreader_desc),
-                        iconPainter = painterResource(id = R.drawable.ic_inoreader),
-                        onClick = {},
-                    ) {}
+                        title = stringResource(R.string.feedbin),
+                        desc = stringResource(R.string.feedbin_desc),
+                        iconPainter = painterResource(id = R.drawable.ic_feedbin),
+                        onClick = {
+                            additionViewModel.showAddFeedbinAccountDialog()
+                        },
+                    )
                     Spacer(modifier = Modifier.height(24.dp))
-                }*/
+                }
                 item {
                     Subtitle(
                         modifier = Modifier.padding(horizontal = 24.dp),
@@ -128,6 +121,7 @@ fun AddAccountsPage(
     AddFeverAccountDialog(onBack, navigateToAccountDetails)
     AddGoogleReaderAccountDialog(onBack, navigateToAccountDetails)
     AddFreshRSSAccountDialog(onBack, navigateToAccountDetails)
+    AddFeedbinAccountDialog(onBack, navigateToAccountDetails)
 }
 
 @Preview

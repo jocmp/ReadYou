@@ -1,8 +1,10 @@
 package me.ash.reader.domain.repository
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import me.ash.reader.domain.model.article.ArchivedArticle
 import me.ash.reader.domain.model.feed.Feed
+import me.ash.reader.domain.model.feed.FeedWithGroups
 import timber.log.Timber
 
 @Dao
@@ -209,4 +211,41 @@ interface FeedDao {
         """
     )
     suspend fun queryArchivedArticles(feedId: String): List<ArchivedArticle>
+
+    /**
+     * Query a feed with all its associated groups using the many-to-many junction table.
+     * This shows which groups a feed belongs to.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM feed
+        WHERE id = :feedId
+        """
+    )
+    suspend fun queryFeedWithGroups(feedId: String): FeedWithGroups?
+
+    /**
+     * Query all feeds with their associated groups using the many-to-many junction table.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM feed
+        WHERE accountId = :accountId
+        """
+    )
+    suspend fun queryAllFeedsWithGroups(accountId: Int): List<FeedWithGroups>
+
+    /**
+     * Query all feeds with their associated groups as a Flow.
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM feed
+        WHERE accountId = :accountId
+        """
+    )
+    fun queryAllFeedsWithGroupsAsFlow(accountId: Int): Flow<List<FeedWithGroups>>
 }
